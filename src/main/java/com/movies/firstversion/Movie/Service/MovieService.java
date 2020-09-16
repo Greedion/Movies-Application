@@ -23,7 +23,7 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
-    ResponseEntity<?> returnAllMovie() {
+    public ResponseEntity<?> returnAllMovie() {
         List<MovieEntity> allMovies = movieRepository.findAll();
         List<MovieModel> returnModelObjects = new ArrayList<>();
         for (MovieEntity x : allMovies
@@ -33,13 +33,13 @@ public class MovieService {
         return ResponseEntity.ok(returnModelObjects);
     }
 
-    ResponseEntity<?> addMovie(MovieModel movieModel) {
+    public ResponseEntity<?> addMovie(MovieModel movieModel) {
         MovieEntity movieEntity = MappeForMovie.mapperModelToEntity(movieModel);
         movieRepository.save(movieEntity);
         return ResponseEntity.ok("Created");
     }
 
-    ResponseEntity<?> getDetails(String id) {
+    public ResponseEntity<?> getDetails(String id) {
         if (movieRepository.existsById(Long.parseLong(id))) {
             Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(id));
             if (movie.isPresent()) {
@@ -49,7 +49,7 @@ public class MovieService {
         return ResponseEntity.badRequest().body("Wrong id");
     }
 
-    ResponseEntity<?> updateMovie(MovieModel inputMovieModel) {
+    public ResponseEntity<?> updateMovie(MovieModel inputMovieModel) {
         if (inputMovieModel.getId() != null && !inputMovieModel.getId().equals("")) {
             if (movieRepository.existsById(Long.parseLong(inputMovieModel.getId()))) {
                 Optional<MovieEntity> moveFromDatabase = movieRepository.findById(Long.parseLong(inputMovieModel.getId()));
@@ -76,19 +76,21 @@ public class MovieService {
                     } else {
                         updatedMovie.setRating(Double.parseDouble(inputMovieModel.getRating()));
                     }
+                    movieRepository.save(updatedMovie);
+                    return ResponseEntity.ok("Updated");
 
                 } else return ResponseEntity.badRequest().body("Movie with this id doesn't exist");
             } else return ResponseEntity.badRequest().body("Movie with this id doesn't exist");
-        }
-        return ResponseEntity.badRequest().body("Id can't be null");
+        } else return ResponseEntity.badRequest().body("Id can't be null");
     }
 
-    ResponseEntity<?> addMarkForFilm(String movieID, String mark) {
+    public ResponseEntity<?> addMarkForFilm(String movieID, String mark) {
         if (movieRepository.existsById(Long.parseLong(movieID))) {
-            Integer convertedMark = Integer.parseInt(mark);
+            Double convertedMark = Double.parseDouble(mark);
             if (allowForMark(convertedMark)) {
                 Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(movieID));
                 movie.ifPresent(movieEntity -> movieEntity.setRating(Double.parseDouble(mark)));
+                movieRepository.save(movie.get());
                 return ResponseEntity.ok("Added Rating");
             }
             return ResponseEntity.badRequest().body("Wrong rating value");
@@ -97,7 +99,7 @@ public class MovieService {
     }
 
 
-    boolean allowForMark(Integer mark) {
+    boolean allowForMark(double mark) {
         return mark >= 1 && mark <= 5;
     }
 
@@ -112,5 +114,7 @@ public class MovieService {
         }
         return ResponseEntity.badRequest().body("Wrong movie id");
     }
+
+
 
 }

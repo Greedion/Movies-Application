@@ -6,6 +6,6 @@ public class MapperForReview {
         return new ReviewModel(String.valueOf(rE.getId()),
                 rE.getReview(),
                 String.valueOf(rE.getLikeReview()),
-                String.valueOf(rE.getMovie()));
+                String.valueOf(rE.getMovie().getTitle()));
     }
 }

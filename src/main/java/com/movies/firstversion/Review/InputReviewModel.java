@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Setter
 public class InputReviewModel implements Serializable {
 
-    String movieId;
+    String movieID;
 
     String review;
 }

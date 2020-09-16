@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,7 @@ public class ReviewService {
         this.movieRepository = movieRepository;
     }
 
-    ResponseEntity<?> getAllRecentForMovie(String movieID) {
+    public ResponseEntity<?> getAllRecentForMovie(String movieID) {
         if (movieRepository.existsById(Long.parseLong(movieID))) {
             Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(movieID));
             if(movie.isPresent()) {
@@ -41,17 +40,29 @@ public class ReviewService {
     }
 
 
-    ResponseEntity<?> addReviewForMovie(InputReviewModel iRM){
-        if(movieRepository.existsById(Long.parseLong(iRM.getMovieId()))){
-            Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(iRM.getMovieId()));
+    public ResponseEntity<?> addReviewForMovie(InputReviewModel iRM){
+        if(movieRepository.existsById(Long.parseLong(iRM.getMovieID()))){
+            Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(iRM.getMovieID()));
             movie.ifPresent(movieEntity -> reviewRepository.save(new ReviewEntity(null, iRM.getReview(), 0, movieEntity)));
             return ResponseEntity.ok("Created");
         } else return ResponseEntity.badRequest().body("Wrong Movie id");
     }
-    ResponseEntity<?> deleteReviewForMovie(String reviewID){
+    public ResponseEntity<?> deleteReviewForMovie(String reviewID){
         if(reviewRepository.existsById(Long.parseLong(reviewID))){
             reviewRepository.deleteById(Long.parseLong(reviewID));
             return ResponseEntity.ok("Deleted");
         } else return ResponseEntity.badRequest().body("Wrong id");
+    }
+
+    public ResponseEntity<?> likeReview(String reviewID){
+        if(reviewRepository.existsById(Long.parseLong(reviewID))){
+            Optional<ReviewEntity> review = reviewRepository.findById(Long.parseLong(reviewID));
+            if(review.isPresent()){
+                review.get().setLikeReview(review.get().getLikeReview() + 1);
+                reviewRepository.save(review.get());
+                return ResponseEntity.ok().body("Like added");
+            }
+        }
+        return ResponseEntity.badRequest().body("Wrong review id");
     }
 }
