@@ -39,7 +39,7 @@
 > Default adress: http://localhost:8080/
 ## Access for everyone
 - login
--logout
+- logout
 ### GET
 - review/getAllByMovie
 - movie/getAll
