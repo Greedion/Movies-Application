@@ -1,5 +1,6 @@
 package com.movies.firstversion.Review.Service;
 
+import com.movies.firstversion.Like.Service.LikeService;
 import com.movies.firstversion.Movie.MovieEntity;
 import com.movies.firstversion.Movie.MovieRepository;
 import com.movies.firstversion.Review.*;
@@ -15,11 +16,13 @@ import java.util.Optional;
 public class ReviewService {
     ReviewRepository reviewRepository;
     MovieRepository movieRepository;
+    LikeService likeService;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, MovieRepository movieRepository) {
+    public ReviewService(ReviewRepository reviewRepository, MovieRepository movieRepository, LikeService likeService) {
         this.reviewRepository = reviewRepository;
         this.movieRepository = movieRepository;
+        this.likeService = likeService;
     }
 
     public ResponseEntity<?> getAllRecentForMovie(String movieID) {
@@ -57,10 +60,12 @@ public class ReviewService {
     public ResponseEntity<?> likeReview(String reviewID){
         if(reviewRepository.existsById(Long.parseLong(reviewID))){
             Optional<ReviewEntity> review = reviewRepository.findById(Long.parseLong(reviewID));
-            if(review.isPresent()){
-                review.get().setLikeReview(review.get().getLikeReview() + 1);
-                reviewRepository.save(review.get());
-                return ResponseEntity.ok().body("Like added");
+            if(review.isPresent()) {
+                if (likeService.canLike(2, review.get().getId())) {
+                    review.get().setLikeReview(review.get().getLikeReview() + 1);
+                    reviewRepository.save(review.get());
+                    return ResponseEntity.ok().body("Like added");
+                } else return ResponseEntity.badRequest().body("You already liked this review");
             }
         }
         return ResponseEntity.badRequest().body("Wrong review id");

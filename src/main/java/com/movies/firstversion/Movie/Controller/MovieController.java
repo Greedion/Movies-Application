@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,9 +51,14 @@ public class MovieController {
         return movieService.updateMovie(movieModel);
     }
 
-    @PostMapping(value = "movie/addMark")
-    ResponseEntity<?> addMark(@RequestParam String movieID, @RequestParam String mark) {
-        return movieService.addMarkForFilm(movieID, mark);
+    @PostMapping(value = "movie/addRating")
+    ResponseEntity<?> addMark(@RequestParam String movieID, @RequestParam String rating) {
+        return movieService.addRatingForFilm(movieID, rating);
+    }
+
+    @PostMapping(value = "movie/likeMovie")
+    ResponseEntity<?> addLikeMovie(@RequestParam String movieID){
+        return movieService.likeMovie(movieID);
     }
 
     Map<String, String> hadErrors(BindingResult result) {

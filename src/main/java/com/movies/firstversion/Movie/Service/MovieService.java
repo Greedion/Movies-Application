@@ -1,11 +1,16 @@
 package com.movies.firstversion.Movie.Service;
 
+import com.movies.firstversion.Like.LikeRepository;
+import com.movies.firstversion.Like.Service.LikeService;
 import com.movies.firstversion.Movie.MappeForMovie;
 import com.movies.firstversion.Movie.MovieEntity;
 import com.movies.firstversion.Movie.MovieModel;
 import com.movies.firstversion.Movie.MovieRepository;
+import com.movies.firstversion.Rating.Service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +22,14 @@ public class MovieService {
 
 
     MovieRepository movieRepository;
+    LikeService likeService;
+    RatingService ratingService;
 
     @Autowired
-    public MovieService(MovieRepository movieRepository) {
+    public MovieService(MovieRepository movieRepository, LikeService likeService, RatingService ratingService) {
         this.movieRepository = movieRepository;
+        this.likeService = likeService;
+        this.ratingService = ratingService;
     }
 
     public ResponseEntity<?> returnAllMovie() {
@@ -84,37 +93,54 @@ public class MovieService {
         } else return ResponseEntity.badRequest().body("Id can't be null");
     }
 
-    public ResponseEntity<?> addMarkForFilm(String movieID, String mark) {
+    public ResponseEntity<?> addRatingForFilm(String movieID, String mark) {
         if (movieRepository.existsById(Long.parseLong(movieID))) {
-            Double convertedMark = Double.parseDouble(mark);
-            if (allowForMark(convertedMark)) {
+            double convertedMark = Double.parseDouble(mark);
+            if (allowForRating(convertedMark)) {
                 Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(movieID));
-                movie.ifPresent(movieEntity -> movieEntity.setRating(Double.parseDouble(mark)));
-                movieRepository.save(movie.get());
-                return ResponseEntity.ok("Added Rating");
-            }
-            return ResponseEntity.badRequest().body("Wrong rating value");
+                if (movie.isPresent()) {
+                    movie.ifPresent(movieEntity -> movieEntity.setRating(Double.parseDouble(mark)));
+                    if (ratingService.canAddRating(movie.get().getId(), Double.parseDouble(mark))) {
+                        if (updatedBaseRate(movie.get().getId())) {
+                            return ResponseEntity.ok("Added Rating");
+                        }else ResponseEntity.badRequest().body("Problem with updating the baseline rating");
+                    } else return ResponseEntity.badRequest().body("You have already added a rating for this movie");
+                } else return ResponseEntity.badRequest().body("Movie with this id doesn't exist");
+            } else return ResponseEntity.badRequest().body("Wrong rating value");
+        } else return ResponseEntity.badRequest().body("This movie id doesn't exist");
+        return ResponseEntity.badRequest().body("Something went wrong");
+    }
+
+
+    boolean allowForRating(double rating) {
+        return rating >= 1 && rating <= 5;
+    }
+
+    boolean updatedBaseRate(Long movieID){
+        Double baseRating = ratingService.returnRateForFilm(movieID);
+        Optional<MovieEntity> movie = movieRepository.findById(movieID);
+        if(movie.isPresent()){
+            movie.get().setRating(baseRating);
+            movieRepository.save(movie.get());
+            return true;
         }
-        return ResponseEntity.badRequest().body("This movie id doesn't exist");
+        return false;
     }
 
+    public ResponseEntity<?> likeMovie(String movieID) {
 
-    boolean allowForMark(double mark) {
-        return mark >= 1 && mark <= 5;
-    }
-
-    ResponseEntity<?> likeMovie(String movieID) {
         if (movieRepository.existsById(Long.parseLong(movieID))) {
             Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(movieID));
             if (movie.isPresent()) {
-                movie.get().setLikeMovie(movie.get().getLikeMovie() + 1);
-                movieRepository.save(movie.get());
-                return ResponseEntity.ok("Added like");
+                if (likeService.canLike(1, movie.get().getId())) {
+                    movie.get().setLikeMovie(movie.get().getLikeMovie() + 1);
+                    movieRepository.save(movie.get());
+                    return ResponseEntity.ok("Added like");
+                } else return ResponseEntity.badRequest().body("You already liked this movie");
             }
         }
         return ResponseEntity.badRequest().body("Wrong movie id");
     }
-
 
 
 }
