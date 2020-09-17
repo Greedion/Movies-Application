@@ -46,20 +46,20 @@
 ## Access for user (Credentials User/User) 
 ### POST
  - movie/addRating 
- - /movie/likeMovie
- - /review/like
- - /review/addReviewForMovie
- -  movie/getDetails
+ - movie/likeMovie
+ - review/like
+ - review/addReviewForMovie
+ - movie/getDetails
 
  
 ### PUT
 - movie/update
  ### DELETE
- - /review/deleteReview
+ - review/deleteReview
  
 ## Access for admin (Credentials Admin/Admin) 
 ### POST
-- /movie/add
-- /movie/update
+- movie/add
+- movie/update
 
 
