@@ -10,7 +10,7 @@
 
 
 ## Features
-- View a list of all movies
+- View the list of all movies
 - Adding the movie to the base
 - View movie details
 - Movie data update
