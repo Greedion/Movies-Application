@@ -1,5 +1,4 @@
 package com.movies.firstversion.Like.Service;
-
 import com.movies.firstversion.Like.LikeEntity;
 import com.movies.firstversion.Like.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +17,22 @@ public class LikeService {
         this.likeRepository = likeRepository;
     }
 
-    public boolean canLike(int type, Long sourceID){
-       if(!likeRepository.existsByTypeAndSourceIDAndUsername(type, sourceID, getUsername())){
-           saveLike(type,sourceID);
-           return true;
-       } else return false;
+    public boolean canLike(int type, Long sourceID) {
+        if (!likeRepository.existsByTypeAndSourceIDAndUsername(type, sourceID, getUsername())) {
+            saveLike(type, sourceID);
+            return true;
+        } else return false;
     }
 
-    public void saveLike(int type,Long sourceID){
+    public void saveLike(int type, Long sourceID) {
         likeRepository.save(new LikeEntity(type, sourceID, getUsername()));
     }
 
-    String getUsername(){
+    String getUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }

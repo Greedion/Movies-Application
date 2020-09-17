@@ -1,12 +1,8 @@
 package com.movies.firstversion.Movie;
-
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
 import javax.persistence.*;
 
 @Entity
@@ -22,7 +18,7 @@ public class MovieEntity {
     @Column(name = "ID", nullable = false)
     Long id;
 
-    @Column(name = "TITLE",nullable = false)
+    @Column(name = "TITLE", nullable = false)
     String title;
 
     @Column(name = "DETAILS", nullable = false)
@@ -33,6 +29,5 @@ public class MovieEntity {
 
     @Column(name = "RATING", nullable = false)
     Double rating;
-
 
 }

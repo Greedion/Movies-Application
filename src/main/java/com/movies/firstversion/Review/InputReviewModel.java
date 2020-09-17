@@ -1,8 +1,5 @@
 package com.movies.firstversion.Review;
-
 import lombok.*;
-
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

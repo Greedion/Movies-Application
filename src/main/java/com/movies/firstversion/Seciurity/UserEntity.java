@@ -1,13 +1,9 @@
 package com.movies.firstversion.Seciurity;
-
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,7 +23,7 @@ public class UserEntity implements UserDetails {
     private String password;
     private String role;
 
-    public UserEntity(String username, String password, String role){
+    public UserEntity(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;

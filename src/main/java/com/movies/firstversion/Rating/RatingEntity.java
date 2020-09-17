@@ -1,10 +1,8 @@
 package com.movies.firstversion.Rating;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Entity
@@ -31,7 +29,7 @@ public class RatingEntity {
 
     public RatingEntity(Long movieID, Double rating, String username) {
         this.movieID = movieID;
-        this.rating =rating;
+        this.rating = rating;
         this.username = username;
     }
 }

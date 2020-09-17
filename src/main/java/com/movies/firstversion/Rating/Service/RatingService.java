@@ -1,5 +1,4 @@
 package com.movies.firstversion.Rating.Service;
-
 import com.movies.firstversion.Movie.MovieRepository;
 import com.movies.firstversion.Rating.RatingEntity;
 import com.movies.firstversion.Rating.RatingRepository;
@@ -7,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -22,17 +20,17 @@ public class RatingService {
         this.ratingRepository = ratingRepository;
     }
 
-    public Double returnRateForFilm(Long movieID){
+    public Double returnRateForFilm(Long movieID) {
         List<RatingEntity> allRatings = ratingRepository.findAllByMovieID(movieID);
-        if(allRatings.isEmpty()){
+        if (allRatings.isEmpty()) {
             return 0.0;
-        }else{
+        } else {
             Double resultRating = 0.0;
             int count = 0;
-            for (RatingEntity x: allRatings
-                 ) {
+            for (RatingEntity x : allRatings
+            ) {
                 count++;
-                resultRating+= x.getRating();
+                resultRating += x.getRating();
             }
             return resultRating / count;
         }
@@ -40,24 +38,24 @@ public class RatingService {
     }
 
 
-    public boolean canAddRating(Long movieID, Double rating){
-        if(!ratingRepository.existsByUsernameAndMovieID(getUsername(), movieID)){
-           save(movieID, rating);
-           return true;
+    public boolean canAddRating(Long movieID, Double rating) {
+        if (!ratingRepository.existsByUsernameAndMovieID(getUsername(), movieID)) {
+            save(movieID, rating);
+            return true;
         } else return false;
     }
 
 
-    void save(Long movieID, Double rating){
-        ratingRepository.save(new RatingEntity(movieID, rating,getUsername()));
+    void save(Long movieID, Double rating) {
+        ratingRepository.save(new RatingEntity(movieID, rating, getUsername()));
     }
 
 
-    String getUsername(){
+    String getUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }

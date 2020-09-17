@@ -1,6 +1,4 @@
 package com.movies.firstversion.Movie.Controller;
-
-
 import com.movies.firstversion.Movie.MovieModel;
 import com.movies.firstversion.Movie.Service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +19,6 @@ public class MovieController {
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
-
 
     @GetMapping(value = "movie/getAll")
     ResponseEntity<?> getAllMovies() {
@@ -57,7 +52,7 @@ public class MovieController {
     }
 
     @PostMapping(value = "movie/likeMovie")
-    ResponseEntity<?> addLikeMovie(@RequestParam String movieID){
+    ResponseEntity<?> addLikeMovie(@RequestParam String movieID) {
         return movieService.likeMovie(movieID);
     }
 
@@ -70,6 +65,5 @@ public class MovieController {
         }
         return errorMap;
     }
-
 
 }
