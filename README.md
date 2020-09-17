@@ -38,6 +38,7 @@
  # Api Endpoints: 
 > Default adress: http://localhost:8080/
 ## Access for everyone
+- login
 ### GET
 - review/getAllByMovie
 - movie/getAll
