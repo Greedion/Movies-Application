@@ -10,10 +10,10 @@ public class MapperForMovie {
                 String.valueOf(mE.getRating()));
     }
 
-    public static MovieEntity mapperModelToEntity(MovieModel movieModel) {
-        return new MovieEntity(null, movieModel.getTitle(),
-                movieModel.getDetails(),
-                Integer.parseInt(movieModel.getLikeMovie()),
-                Double.parseDouble(movieModel.getRating()));
+    public static MovieEntity mapperModelToEntity(MovieModel mM) {
+        return new MovieEntity(null, mM.getTitle(),
+                mM.getDetails(),
+                Integer.parseInt(mM.getLikeMovie()),
+                Double.parseDouble(mM.getRating()));
     }
 }
