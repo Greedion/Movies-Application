@@ -43,7 +43,7 @@
 - movie/getAll
 
 
-## Access for user (Credentails User/User) 
+## Access for user (Credentials User/User) 
 ### POST
  - movie/addRating 
  - /movie/likeMovie
@@ -57,7 +57,7 @@
  ### DELETE
  - /review/deleteReview
  
-## Access for admin (Credentails Admin/Admin) 
+## Access for admin (Credentials Admin/Admin) 
 ### POST
 - /movie/add
 - /movie/update
