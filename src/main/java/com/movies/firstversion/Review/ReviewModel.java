@@ -15,7 +15,7 @@ public class ReviewModel implements Serializable {
 
     String id;
 
-    @NotNull
+    @NotNull(message = "Review can't be null")
     @Size(min = 5, max = 500)
     String review;
 

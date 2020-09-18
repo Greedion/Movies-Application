@@ -19,6 +19,9 @@ public class MovieService {
     LikeService likeService;
     RatingService ratingService;
 
+    private final String INITIAL_RATING = "0.0";
+    private final String INITIAL_LIKE = "0";
+
     @Autowired
     public MovieService(MovieRepository movieRepository, LikeService likeService, RatingService ratingService) {
         this.movieRepository = movieRepository;
@@ -37,8 +40,8 @@ public class MovieService {
     }
 
     public ResponseEntity<?> addMovie(MovieModel movieModel) {
-        movieModel.setRating("0.0");
-        movieModel.setLikeMovie("0");
+        movieModel.setRating(INITIAL_RATING);
+        movieModel.setLikeMovie(INITIAL_LIKE);
         MovieEntity movieEntity = MapperForMovie.mapperModelToEntity(movieModel);
         movieRepository.save(movieEntity);
         return ResponseEntity.ok("Created");

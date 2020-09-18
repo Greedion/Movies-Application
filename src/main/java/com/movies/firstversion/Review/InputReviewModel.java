@@ -12,11 +12,11 @@ import java.io.Serializable;
 @Setter
 public class InputReviewModel implements Serializable {
 
-    @NotNull
+    @NotNull(message = "Movie id can't be null")
     @Pattern(regexp = "[0-9]+", message = "Accept only digits")
     String movieID;
 
-    @NotNull
-    @Size(min = 5, max = 500)
+    @NotNull(message = "Review can't be null")
+    @Size(min = 5, max = 500, message = "The required length ranges from 5 - 500")
     String review;
 }
