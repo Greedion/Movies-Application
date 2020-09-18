@@ -19,11 +19,8 @@ public class MovieService {
     MovieRepository movieRepository;
     LikeService likeService;
     RatingService ratingService;
-
-    @Value("${initial_metadata.initial_rating}")
-    private String INITIAL_RATING;
-    @Value("${initial_metadata.initial_like}")
-    private  String INITIAL_LIKE;
+    private final String INITIAL_RATING = "0.0";
+    private final String INITIAL_LIKE = "0";
 
     @Autowired
     public MovieService(MovieRepository movieRepository, LikeService likeService, RatingService ratingService) {
