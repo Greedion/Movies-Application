@@ -21,7 +21,9 @@ logging:
         type: TRACE
 
 
-
+initial_metadata:
+  initial_rating: 0.0
+  initial_like: 0
 
 
 

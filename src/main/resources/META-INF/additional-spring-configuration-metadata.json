@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "initial_metadata.initial_rating",
+      "type": "java.lang.String",
+      "description": "The initial value in MovieService used in the RATING field when creating the object."
+    },
+    {
+      "name": "initial_metadata.initial_like",
+      "type": "java.lang.String",
+      "description": "The initial value in MovieService used in the LIKE field when creating the object."
+    }
+
+  ] }

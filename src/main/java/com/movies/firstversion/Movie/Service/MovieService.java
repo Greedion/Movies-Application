@@ -6,6 +6,7 @@ import com.movies.firstversion.Movie.MovieModel;
 import com.movies.firstversion.Movie.MovieRepository;
 import com.movies.firstversion.Rating.Service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -19,8 +20,10 @@ public class MovieService {
     LikeService likeService;
     RatingService ratingService;
 
-    private final String INITIAL_RATING = "0.0";
-    private final String INITIAL_LIKE = "0";
+    @Value("${initial_metadata.initial_rating}")
+    private String INITIAL_RATING;
+    @Value("${initial_metadata.initial_like}")
+    private  String INITIAL_LIKE;
 
     @Autowired
     public MovieService(MovieRepository movieRepository, LikeService likeService, RatingService ratingService) {
