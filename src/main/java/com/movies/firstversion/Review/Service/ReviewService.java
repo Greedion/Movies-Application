@@ -1,4 +1,5 @@
 package com.movies.firstversion.Review.Service;
+
 import com.movies.firstversion.Like.Service.LikeService;
 import com.movies.firstversion.Movie.MovieEntity;
 import com.movies.firstversion.Movie.MovieRepository;
@@ -6,6 +7,7 @@ import com.movies.firstversion.Review.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +39,7 @@ public class ReviewService {
                 return ResponseEntity.ok(reviewModelObjects);
             }
         }
-        return ResponseEntity.badRequest().body("Movie id doesn't exist");
+        return ResponseEntity.badRequest().build();
     }
 
 
@@ -45,15 +47,15 @@ public class ReviewService {
         if (movieRepository.existsById(Long.parseLong(iRM.getMovieID()))) {
             Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(iRM.getMovieID()));
             movie.ifPresent(movieEntity -> reviewRepository.save(new ReviewEntity(null, iRM.getReview(), 0, movieEntity)));
-            return ResponseEntity.ok("Created");
-        } else return ResponseEntity.badRequest().body("Wrong Movie id");
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.badRequest().build();
     }
 
     public ResponseEntity<?> deleteReviewForMovie(String reviewID) {
         if (reviewRepository.existsById(Long.parseLong(reviewID))) {
             reviewRepository.deleteById(Long.parseLong(reviewID));
-            return ResponseEntity.ok("Deleted");
-        } else return ResponseEntity.badRequest().body("Wrong id");
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.badRequest().build();
     }
 
     public ResponseEntity<?> likeReview(String reviewID) {
@@ -63,10 +65,9 @@ public class ReviewService {
                 if (likeService.canLike(2, review.get().getId())) {
                     review.get().setLikeReview(review.get().getLikeReview() + 1);
                     reviewRepository.save(review.get());
-                    return ResponseEntity.ok().body("Like added");
-                } else return ResponseEntity.badRequest().body("You already liked this review");
+                    return ResponseEntity.ok().build();
+                }
             }
-        }
-        return ResponseEntity.badRequest().body("Wrong review id");
+        } return ResponseEntity.badRequest().build();
     }
 }

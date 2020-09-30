@@ -1,4 +1,5 @@
 package com.movies.firstversion.Movie.Service;
+
 import com.movies.firstversion.Like.Service.LikeService;
 import com.movies.firstversion.Movie.MapperForMovie;
 import com.movies.firstversion.Movie.MovieEntity;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +46,7 @@ public class MovieService {
         movieModel.setLikeMovie(INITIAL_LIKE);
         MovieEntity movieEntity = MapperForMovie.mapperModelToEntity(movieModel);
         movieRepository.save(movieEntity);
-        return ResponseEntity.ok("Created");
+        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<?> getDetails(String id) {
@@ -54,7 +56,7 @@ public class MovieService {
                 return ResponseEntity.ok(movie.get().getDetails());
             }
         }
-        return ResponseEntity.badRequest().body("Wrong id");
+        return ResponseEntity.badRequest().build();
     }
 
     public ResponseEntity<?> updateMovie(MovieModel inputMovieModel) {
@@ -77,10 +79,11 @@ public class MovieService {
                     updatedMovie.setLikeMovie(moveFromDatabase.get().getLikeMovie());
                     updatedMovie.setRating(moveFromDatabase.get().getRating());
                     movieRepository.save(updatedMovie);
-                    return ResponseEntity.ok("Updated");
-                } else return ResponseEntity.badRequest().body("Movie with this id doesn't exist");
-            } else return ResponseEntity.badRequest().body("Movie with this id doesn't exist");
-        } else return ResponseEntity.badRequest().body("Id can't be null");
+                    return ResponseEntity.ok().build();
+                }
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     public ResponseEntity<?> addRatingForFilm(String movieID, String mark) {
@@ -92,13 +95,13 @@ public class MovieService {
                     movie.ifPresent(movieEntity -> movieEntity.setRating(Double.parseDouble(mark)));
                     if (ratingService.canAddRating(movie.get().getId(), Double.parseDouble(mark))) {
                         if (updatedBaseRate(movie.get().getId())) {
-                            return ResponseEntity.ok("Added Rating");
-                        } else ResponseEntity.badRequest().body("Problem with updating the baseline rating");
-                    } else return ResponseEntity.badRequest().body("You have already added a rating for this movie");
-                } else return ResponseEntity.badRequest().body("Movie with this id doesn't exist");
-            } else return ResponseEntity.badRequest().body("Wrong rating value");
-        } else return ResponseEntity.badRequest().body("This movie id doesn't exist");
-        return ResponseEntity.badRequest().body("Something went wrong");
+                            return ResponseEntity.ok().build();
+                        }
+                    }
+                }
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 
@@ -124,11 +127,11 @@ public class MovieService {
                 if (likeService.canLike(1, movie.get().getId())) {
                     movie.get().setLikeMovie(movie.get().getLikeMovie() + 1);
                     movieRepository.save(movie.get());
-                    return ResponseEntity.ok("Added like");
-                } else return ResponseEntity.badRequest().body("You already liked this movie");
+                    return ResponseEntity.ok().build();
+                }
             }
         }
-        return ResponseEntity.badRequest().body("Wrong movie id");
+        return ResponseEntity.badRequest().build();
     }
 
 }
