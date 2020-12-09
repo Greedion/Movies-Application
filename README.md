@@ -54,14 +54,14 @@
  - movie/getDetails
 
  
-### PUT
-- movie/update
  ### DELETE
  - review/deleteReview
  
 ## Access for admin (Credentials Admin/Admin) 
 ### POST
 - movie/add
+
+### PUT
 - movie/update
 
 
