@@ -26,7 +26,7 @@
 
 ## Technology
  - Spring Boot
- - Spring Seciurity
+ - Spring Security
  - Spring Validation
  - Spring Web
  - Spring Data JPA
