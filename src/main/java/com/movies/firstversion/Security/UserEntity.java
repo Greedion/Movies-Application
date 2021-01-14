@@ -1,4 +1,4 @@
-package com.movies.firstversion.Seciurity;
+package com.movies.firstversion.Security;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,4 +1,4 @@
-package com.movies.firstversion.Seciurity;
+package com.movies.firstversion.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
