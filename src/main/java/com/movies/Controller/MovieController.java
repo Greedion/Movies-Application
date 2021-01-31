@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("movie")
 public class MovieController {
 
     MovieService movieService;
@@ -20,12 +21,12 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @GetMapping(value = "movie/getAll")
+    @GetMapping(value = "getAll")
     ResponseEntity<?> getAllMovies() {
         return movieService.returnAllMovie();
     }
 
-    @PostMapping(value = "movie/add")
+    @PostMapping(value = "add")
     ResponseEntity<?> addMovie(@RequestBody MovieModel movieModel, BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(hadErrors(result), HttpStatus.BAD_REQUEST);
@@ -33,12 +34,12 @@ public class MovieController {
         return movieService.addMovie(movieModel);
     }
 
-    @PostMapping(value = "movie/getDetails")
-    ResponseEntity<?> getMovieDetails(@RequestParam String id) {
+    @GetMapping(value = "getDetails/{id}")
+    ResponseEntity<?> getMovieDetails(@PathVariable String id) {
         return movieService.getDetails(id);
     }
 
-    @PutMapping(value = "movie/update")
+    @PutMapping(value = "update")
     ResponseEntity<?> updateMovie(@RequestBody MovieModel movieModel, BindingResult result) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(hadErrors(result), HttpStatus.BAD_REQUEST);
@@ -46,12 +47,12 @@ public class MovieController {
         return movieService.updateMovie(movieModel);
     }
 
-    @PostMapping(value = "movie/addRating")
+    @PostMapping(value = "addRating")
     ResponseEntity<?> addMark(@RequestParam String movieID, @RequestParam String rating) {
         return movieService.addRatingForFilm(movieID, rating);
     }
 
-    @PostMapping(value = "movie/likeMovie")
+    @PostMapping(value = "likeMovie")
     ResponseEntity<?> addLikeMovie(@RequestParam String movieID) {
         return movieService.likeMovie(movieID);
     }

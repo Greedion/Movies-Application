@@ -20,8 +20,8 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @PostMapping(value = "review/getAllByMovie")
-    ResponseEntity<?> getAllRecentForMovie(@RequestParam String movieID) {
+    @GetMapping(value = "review/getAllByMovie/{movieID}")
+    ResponseEntity<?> getAllRecentForMovie(@PathVariable String movieID) {
         return reviewService.getAllRecentForMovie(movieID);
     }
 
