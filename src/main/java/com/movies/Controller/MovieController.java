@@ -13,8 +13,7 @@ import java.util.Map;
 @RequestMapping("/api/movie/")
 public class MovieController {
 
-    final
-    private MovieServiceImpl movieServiceImpl;
+    private final MovieServiceImpl movieServiceImpl;
 
     public MovieController(MovieServiceImpl movieServiceImpl) {
         this.movieServiceImpl = movieServiceImpl;

@@ -16,12 +16,9 @@ import java.util.Optional;
 @Service
 public class MovieServiceImpl implements MoveService {
 
-    final
-    private MovieRepository movieRepository;
-    final
-    private LikeServiceImpl likeServiceImpl;
-    final
-    private RatingServiceImpl ratingServiceImpl;
+    private final MovieRepository movieRepository;
+    private final LikeServiceImpl likeServiceImpl;
+    private final RatingServiceImpl ratingServiceImpl;
     private final static String INITIAL_RATING = "0.0";
     private final static String INITIAL_LIKE = "0";
 

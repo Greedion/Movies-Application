@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LikeServiceImpl implements LikeService {
 
-    final
-    private LikeRepository likeRepository;
+    private final LikeRepository likeRepository;
 
     public LikeServiceImpl(LikeRepository likeRepository) {
         this.likeRepository = likeRepository;

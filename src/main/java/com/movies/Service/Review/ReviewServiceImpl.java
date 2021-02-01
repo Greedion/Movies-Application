@@ -17,12 +17,10 @@ import java.util.Optional;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
-    final
-    private ReviewRepository reviewRepository;
-    final
-    private MovieRepository movieRepository;
-    final
-    private LikeServiceImpl likeServiceImpl;
+
+    private final ReviewRepository reviewRepository;
+    private final MovieRepository movieRepository;
+    private final LikeServiceImpl likeServiceImpl;
 
     public ReviewServiceImpl(ReviewRepository reviewRepository, MovieRepository movieRepository, LikeServiceImpl likeServiceImpl) {
         this.reviewRepository = reviewRepository;

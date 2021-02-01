@@ -13,8 +13,7 @@ import java.util.Map;
 @RequestMapping("/api/review/")
 public class ReviewController {
 
-    final
-    private ReviewServiceImpl reviewServiceImpl;
+    private final ReviewServiceImpl reviewServiceImpl;
 
     public ReviewController(ReviewServiceImpl reviewServiceImpl) {
         this.reviewServiceImpl = reviewServiceImpl;
