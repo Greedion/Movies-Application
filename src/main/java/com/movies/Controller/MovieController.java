@@ -1,7 +1,6 @@
 package com.movies.Controller;
 import com.movies.Model.MovieModel;
 import com.movies.Service.Movie.MovieService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -11,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("movie")
+@RequestMapping("/api/movie/")
 public class MovieController {
 
-    MovieService movieService;
+    final
+    private MovieService movieService;
 
-    @Autowired
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }

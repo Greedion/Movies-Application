@@ -1,7 +1,6 @@
 package com.movies.Controller;
 import com.movies.Model.InputReviewModel;
 import com.movies.Service.Review.ReviewService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -11,21 +10,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/review/")
 public class ReviewController {
 
-    ReviewService reviewService;
+    final
+    private ReviewService reviewService;
 
-    @Autowired
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
 
-    @GetMapping(value = "review/getAllByMovie/{movieID}")
+    @GetMapping(value = "getAllByMovie/{movieID}")
     ResponseEntity<?> getAllRecentForMovie(@PathVariable String movieID) {
         return reviewService.getAllRecentForMovie(movieID);
     }
 
-    @PostMapping(value = "review/addReviewForMovie")
+    @PostMapping(value = "addReviewForMovie")
     ResponseEntity<?> addReviewForMovie(@RequestBody InputReviewModel inputReviewModel, BindingResult result) {
         if (result.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
@@ -38,12 +38,12 @@ public class ReviewController {
         return reviewService.addReviewForMovie(inputReviewModel);
     }
 
-    @DeleteMapping(value = "review/deleteReview")
+    @DeleteMapping(value = "deleteReview")
     ResponseEntity<?> deleteReviewForMovie(@RequestParam String reviewID) {
         return reviewService.deleteReviewForMovie(reviewID);
     }
 
-    @PostMapping(value = "review/like")
+    @PostMapping(value = "like")
     ResponseEntity<?> likeReview(String reviewID) {
         return reviewService.likeReview(reviewID);
     }
