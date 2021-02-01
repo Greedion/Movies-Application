@@ -1,5 +1,7 @@
 package com.movies.Model;
+
 import lombok.*;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
@@ -9,20 +11,20 @@ import java.io.Serializable;
 @Getter
 public class MovieModel implements Serializable {
 
-    String id;
+    private String id;
 
     @NotNull(message = "Title can't be null")
     @NotEmpty(message = "Title can't be empty")
     @Size(min = 3, max = 14, message = "Tile length can be 3-14")
-    String title;
+    private String title;
 
     @NotNull(message = "Title can't be null")
     @NotEmpty(message = "Title can't be empty")
     @Size(min = 3, max = 500, message = "Detail length can be from range 3-500")
-    String details;
+    private String details;
 
-    String likeMovie;
+    private String likeMovie;
 
-    String rating;
+    private String rating;
 
 }

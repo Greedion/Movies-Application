@@ -2,11 +2,10 @@ package com.movies.Service.Movie;
 
 import com.movies.Entity.MovieEntity;
 import com.movies.Model.MovieModel;
-import com.movies.Service.Like.LikeService;
-import com.movies.Service.Rating.RatingService;
+import com.movies.Service.Like.LikeServiceImpl;
+import com.movies.Service.Rating.RatingServiceImpl;
 import com.movies.Utils.MapperForMovie;
 import com.movies.Repository.MovieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +14,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MovieService {
+public class MovieServiceImpl implements MoveService {
 
-    MovieRepository movieRepository;
-    LikeService likeService;
-    RatingService ratingService;
-    private final String INITIAL_RATING = "0.0";
-    private final String INITIAL_LIKE = "0";
+    final
+    private MovieRepository movieRepository;
+    final
+    private LikeServiceImpl likeServiceImpl;
+    final
+    private RatingServiceImpl ratingServiceImpl;
+    private final static String INITIAL_RATING = "0.0";
+    private final static String INITIAL_LIKE = "0";
 
-    @Autowired
-    public MovieService(MovieRepository movieRepository, LikeService likeService, RatingService ratingService) {
+    public MovieServiceImpl(MovieRepository movieRepository, LikeServiceImpl likeServiceImpl, RatingServiceImpl ratingServiceImpl) {
         this.movieRepository = movieRepository;
-        this.likeService = likeService;
-        this.ratingService = ratingService;
+        this.likeServiceImpl = likeServiceImpl;
+        this.ratingServiceImpl = ratingServiceImpl;
     }
 
+    @Override
     public ResponseEntity<?> returnAllMovie() {
         List<MovieEntity> allMovies = movieRepository.findAll();
         List<MovieModel> returnModelObjects = new ArrayList<>();
@@ -40,6 +42,7 @@ public class MovieService {
         return ResponseEntity.ok(returnModelObjects);
     }
 
+    @Override
     public ResponseEntity<?> addMovie(MovieModel movieModel) {
         movieModel.setRating(INITIAL_RATING);
         movieModel.setLikeMovie(INITIAL_LIKE);
@@ -48,6 +51,7 @@ public class MovieService {
         return ResponseEntity.ok().build();
     }
 
+    @Override
     public ResponseEntity<?> getDetails(String id) {
         if (movieRepository.existsById(Long.parseLong(id))) {
             Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(id));
@@ -58,6 +62,7 @@ public class MovieService {
         return ResponseEntity.badRequest().build();
     }
 
+    @Override
     public ResponseEntity<?> updateMovie(MovieModel inputMovieModel) {
         if (inputMovieModel.getId() != null && !inputMovieModel.getId().equals("")) {
             if (movieRepository.existsById(Long.parseLong(inputMovieModel.getId()))) {
@@ -85,6 +90,7 @@ public class MovieService {
         return ResponseEntity.badRequest().build();
     }
 
+    @Override
     public ResponseEntity<?> addRatingForFilm(String movieID, String mark) {
         if (movieRepository.existsById(Long.parseLong(movieID))) {
             double convertedMark = Double.parseDouble(mark);
@@ -92,7 +98,7 @@ public class MovieService {
                 Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(movieID));
                 if (movie.isPresent()) {
                     movie.ifPresent(movieEntity -> movieEntity.setRating(Double.parseDouble(mark)));
-                    if (ratingService.canAddRating(movie.get().getId(), Double.parseDouble(mark))) {
+                    if (ratingServiceImpl.canAddRating(movie.get().getId(), Double.parseDouble(mark))) {
                         if (updatedBaseRate(movie.get().getId())) {
                             return ResponseEntity.ok().build();
                         }
@@ -104,12 +110,12 @@ public class MovieService {
     }
 
 
-    boolean allowForRating(double rating) {
+    private boolean allowForRating(double rating) {
         return rating >= 1 && rating <= 5;
     }
 
-    boolean updatedBaseRate(Long movieID) {
-        Double baseRating = ratingService.returnRateForFilm(movieID);
+    private boolean updatedBaseRate(Long movieID) {
+        Double baseRating = ratingServiceImpl.returnRateForFilm(movieID);
         Optional<MovieEntity> movie = movieRepository.findById(movieID);
         if (movie.isPresent()) {
             movie.get().setRating(baseRating);
@@ -119,11 +125,12 @@ public class MovieService {
         return false;
     }
 
+    @Override
     public ResponseEntity<?> likeMovie(String movieID) {
         if (movieRepository.existsById(Long.parseLong(movieID))) {
             Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(movieID));
             if (movie.isPresent()) {
-                if (likeService.canLike(1, movie.get().getId())) {
+                if (likeServiceImpl.canLike(1, movie.get().getId())) {
                     movie.get().setLikeMovie(movie.get().getLikeMovie() + 1);
                     movieRepository.save(movie.get());
                     return ResponseEntity.ok().build();

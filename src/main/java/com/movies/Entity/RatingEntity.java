@@ -16,16 +16,16 @@ public class RatingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    Long id;
+    private Long id;
 
     @Column(name = "MOVIEID", nullable = false)
-    Long movieID;
+    private Long movieID;
 
     @Column(name = "RATE", nullable = false)
-    Double rating;
+    private Double rating;
 
     @Column(name = "USERNAME", nullable = false)
-    String username;
+    private String username;
 
     public RatingEntity(Long movieID, Double rating, String username) {
         this.movieID = movieID;

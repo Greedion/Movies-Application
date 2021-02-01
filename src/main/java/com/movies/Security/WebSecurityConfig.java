@@ -1,7 +1,6 @@
 package com.movies.Security;
 import com.movies.Entity.UserEntity;
 import com.movies.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,15 +14,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    UserDetailsServiceImpl userDetailsService;
-    UserRepository userRepository;
+    final
+    private UserDetailsServiceImpl userDetailsService;
+    final
+    private UserRepository userRepository;
 
-    @Autowired
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, UserRepository userRepository) {
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -33,28 +32,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/movie/update").hasRole("ADMIN")
-                .antMatchers("/movie/add").hasRole("ADMIN")
-                .antMatchers("/review/addReviewForMovie").hasRole("USER")
-                .antMatchers("/review/deleteReview").hasRole("USER")
-                .antMatchers("/review/like").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/movie/likeMovie").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/movie/addRating").hasAnyRole("ADMIN", "USER")
-                .antMatchers("review/getAllByMovie").permitAll()
-                .antMatchers("movie/getAll").permitAll()
-                .antMatchers("movie/getDetails").permitAll()
+                .antMatchers("/api/movie/update").hasRole("ADMIN")
+                .antMatchers("/api/movie/add").hasRole("ADMIN")
+                .antMatchers("/api/review/addReviewForMovie").hasRole("USER")
+                .antMatchers("/api/review/deleteReview").hasRole("USER")
+                .antMatchers("/api/review/like").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/movie/likeMovie").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/movie/addRating").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/review/getAllByMovie").permitAll()
+                .antMatchers("/api/movie/getAll").permitAll()
+                .antMatchers("/api/movie/getDetails").permitAll()
                 .and()
                 .formLogin().permitAll()
                 .and()
                 .csrf().disable();
     }
 
-
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @EventListener(ApplicationReadyEvent.class)
     public void createSampleUser() {
@@ -63,5 +60,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         userRepository.save(user);
         userRepository.save(admin);
     }
-
 }

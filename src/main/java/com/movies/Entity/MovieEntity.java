@@ -16,18 +16,18 @@ public class MovieEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    Long id;
+    private Long id;
 
     @Column(name = "TITLE", nullable = false)
-    String title;
+    private String title;
 
     @Column(name = "DETAILS", nullable = false)
-    String details;
+    private String details;
 
     @Column(name = "LIIKEMOVIE")
-    Integer likeMovie;
+    private Integer likeMovie;
 
     @Column(name = "RATING", nullable = false)
-    Double rating;
+    private Double rating;
 
 }

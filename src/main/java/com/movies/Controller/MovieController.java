@@ -1,6 +1,6 @@
 package com.movies.Controller;
 import com.movies.Model.MovieModel;
-import com.movies.Service.Movie.MovieService;
+import com.movies.Service.Movie.MovieServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,15 +14,15 @@ import java.util.Map;
 public class MovieController {
 
     final
-    private MovieService movieService;
+    private MovieServiceImpl movieServiceImpl;
 
-    public MovieController(MovieService movieService) {
-        this.movieService = movieService;
+    public MovieController(MovieServiceImpl movieServiceImpl) {
+        this.movieServiceImpl = movieServiceImpl;
     }
 
     @GetMapping(value = "getAll")
     ResponseEntity<?> getAllMovies() {
-        return movieService.returnAllMovie();
+        return movieServiceImpl.returnAllMovie();
     }
 
     @PostMapping(value = "add")
@@ -30,12 +30,12 @@ public class MovieController {
         if (result.hasErrors()) {
             return new ResponseEntity<>(hadErrors(result), HttpStatus.BAD_REQUEST);
         }
-        return movieService.addMovie(movieModel);
+        return movieServiceImpl.addMovie(movieModel);
     }
 
     @GetMapping(value = "getDetails/{id}")
     ResponseEntity<?> getMovieDetails(@PathVariable String id) {
-        return movieService.getDetails(id);
+        return movieServiceImpl.getDetails(id);
     }
 
     @PutMapping(value = "update")
@@ -43,17 +43,17 @@ public class MovieController {
         if (result.hasErrors()) {
             return new ResponseEntity<>(hadErrors(result), HttpStatus.BAD_REQUEST);
         }
-        return movieService.updateMovie(movieModel);
+        return movieServiceImpl.updateMovie(movieModel);
     }
 
     @PostMapping(value = "addRating")
     ResponseEntity<?> addMark(@RequestParam String movieID, @RequestParam String rating) {
-        return movieService.addRatingForFilm(movieID, rating);
+        return movieServiceImpl.addRatingForFilm(movieID, rating);
     }
 
     @PostMapping(value = "likeMovie")
     ResponseEntity<?> addLikeMovie(@RequestParam String movieID) {
-        return movieService.likeMovie(movieID);
+        return movieServiceImpl.likeMovie(movieID);
     }
 
     Map<String, String> hadErrors(BindingResult result) {

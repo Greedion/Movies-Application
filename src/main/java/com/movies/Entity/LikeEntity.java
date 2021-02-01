@@ -16,18 +16,18 @@ public class LikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    Long id;
+    private Long id;
 
     // 1 - Movie , 2 Review
     @Column(name = "TYPE", nullable = false)
-    Integer type;
+    private Integer type;
 
     // id for movie or review
     @Column(name = "SOURCEID", nullable = false)
-    Long sourceID;
+    private Long sourceID;
 
     @Column(name = "USERNAME", nullable = false)
-    String username;
+    private String username;
 
     public LikeEntity(int type, Long sourceID, String username) {
         this.type = type;

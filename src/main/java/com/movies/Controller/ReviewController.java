@@ -1,6 +1,6 @@
 package com.movies.Controller;
 import com.movies.Model.InputReviewModel;
-import com.movies.Service.Review.ReviewService;
+import com.movies.Service.Review.ReviewServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,15 +14,15 @@ import java.util.Map;
 public class ReviewController {
 
     final
-    private ReviewService reviewService;
+    private ReviewServiceImpl reviewServiceImpl;
 
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
+    public ReviewController(ReviewServiceImpl reviewServiceImpl) {
+        this.reviewServiceImpl = reviewServiceImpl;
     }
 
     @GetMapping(value = "getAllByMovie/{movieID}")
     ResponseEntity<?> getAllRecentForMovie(@PathVariable String movieID) {
-        return reviewService.getAllRecentForMovie(movieID);
+        return reviewServiceImpl.getAllRecentForMovie(movieID);
     }
 
     @PostMapping(value = "addReviewForMovie")
@@ -35,17 +35,17 @@ public class ReviewController {
             }
             return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
         }
-        return reviewService.addReviewForMovie(inputReviewModel);
+        return reviewServiceImpl.addReviewForMovie(inputReviewModel);
     }
 
     @DeleteMapping(value = "deleteReview")
     ResponseEntity<?> deleteReviewForMovie(@RequestParam String reviewID) {
-        return reviewService.deleteReviewForMovie(reviewID);
+        return reviewServiceImpl.deleteReviewForMovie(reviewID);
     }
 
     @PostMapping(value = "like")
     ResponseEntity<?> likeReview(String reviewID) {
-        return reviewService.likeReview(reviewID);
+        return reviewServiceImpl.likeReview(reviewID);
     }
 
 }

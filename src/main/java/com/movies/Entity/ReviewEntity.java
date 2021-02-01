@@ -16,13 +16,13 @@ public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    Long id;
+    private Long id;
 
     @Column(name = "REVIEW", nullable = false)
-    String review;
+    private String review;
 
     @Column(name = "LIIKEREVIEW")
-    Integer likeReview;
+    private Integer likeReview;
 
 
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
