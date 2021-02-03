@@ -34,7 +34,7 @@
  - Maven
  - Lombok
  
- # Credentails
+ # Credentials
  ## Admin/Admin
  ## User/User
  
