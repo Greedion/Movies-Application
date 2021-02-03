@@ -21,5 +21,8 @@ logging:
         type: TRACE
 
 
+jwt:
+  secret_key: secretpassword
+  login_token_expiration_time: 600000
 
 
