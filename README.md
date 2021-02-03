@@ -52,7 +52,7 @@
 - GET /review
 - GET /review/{id}
 ## Access for user
-- POST /movie/addrating/[{movideId},{rating}]
+- POST /movie/addrating/[{movieId},{rating}]
 - POST /movie/likemovie/{movieId}
 - POST /review
 - POST /review/like/{reviewId}
