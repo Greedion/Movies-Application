@@ -3,6 +3,7 @@ package com.Movies.Controller;
 import com.Movies.DataTransferObject.UserDTO;
 import com.Movies.POJO.POJOUser;
 import com.Movies.Service.User.UserServiceImpl;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,12 +31,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(consumes = "application/json")
+    @ApiOperation(value = "Get all users.", notes = "Needed authorization from Admin account")
+    @GetMapping(produces = "application/json")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<List<UserDTO>> getAllUsers() {
         return userService.getAllUsers();
     }
 
+    @ApiOperation(value = "Create account.")
     @PostMapping(value = "/createaccount", produces = "application/json", consumes = "application/json")
     @PreAuthorize("permitAll()")
     ResponseEntity<?> createAccount(@Valid @RequestBody POJOUser pojoUser, BindingResult result) {

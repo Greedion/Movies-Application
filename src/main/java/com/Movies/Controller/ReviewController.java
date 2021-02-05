@@ -3,6 +3,7 @@ package com.Movies.Controller;
 import com.Movies.Model.InputReviewModel;
 import com.Movies.Repository.ReviewRepository;
 import com.Movies.Service.Review.ReviewServiceImpl;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,16 +31,17 @@ public class ReviewController {
         this.reviewRepository = reviewRepository;
     }
 
+    @ApiOperation(value = "Get all reviews.")
     @GetMapping(value = "/{movieID}", produces = "application/json")
     @PreAuthorize("permitAll()")
     ResponseEntity<?> getAllRecentForMovie(@PathVariable String movieID) {
         return reviewServiceImpl.getAllRecentForMovie(movieID);
     }
 
+    @ApiOperation(value = "Get a single movie details by id.", notes = "Needed authentication.")
     @PostMapping(produces = "application/json", consumes = "application/json")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    ResponseEntity<?> addReviewForMovie(@RequestBody InputReviewModel inputReviewModel, BindingResult result) {
-
+    ResponseEntity<?> addReviewForMovie(@Valid @RequestBody InputReviewModel inputReviewModel, BindingResult result) {
         if (inputReviewModel == null) {
             logger.error("Attempt create movie with empty input data.");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Attempt create movie with empty input data.");
@@ -56,6 +59,7 @@ public class ReviewController {
         return reviewServiceImpl.addReviewForMovie(inputReviewModel);
     }
 
+    @ApiOperation(value = "Delete review.", notes = "Needed authorization from Admin account.")
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<?> deleteReviewForMovie(@PathVariable String reviewId) {
@@ -71,6 +75,7 @@ public class ReviewController {
         }
     }
 
+    @ApiOperation(value = "Like review.", notes = "Needed authentication.")
     @PutMapping(value = "/like/{reviewId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     ResponseEntity<?> likeReview(@PathVariable(name = "reviewId") String reviewId) {

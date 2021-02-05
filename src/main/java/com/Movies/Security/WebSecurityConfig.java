@@ -1,4 +1,5 @@
 package com.Movies.Security;
+
 import com.Movies.Entity.UserEntity;
 import com.Movies.Repository.UserRepository;
 import com.Movies.Security.JWTAuth.AuthEntryPointJwt;
@@ -11,6 +12,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    JWTFilter authenticationJwtTokenFilter(){
+    JWTFilter authenticationJwtTokenFilter() {
         return new JWTFilter(jwtUtils, userDetailsService);
     }
 
@@ -51,25 +53,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**");
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+            http
+                .cors()
+                .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/user").hasRole("ADMIN")
+                .antMatchers("/api/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers(HttpMethod.POST, "api/user/createaccount").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+            http.csrf().disable();
 
-        http.csrf().disable();
-        http.cors().disable();
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void createSampleUser() {
-            UserEntity user = new UserEntity("User", passwordEncoder().encode("User"), "ROLE_USER");
-            UserEntity admin = new UserEntity("Admin", passwordEncoder().encode("Admin"), "ROLE_ADMIN");
-            userRepository.save(user);
-            userRepository.save(admin);
+        UserEntity user = new UserEntity("User", passwordEncoder().encode("User"), "ROLE_USER");
+        UserEntity admin = new UserEntity("Admin", passwordEncoder().encode("Admin"), "ROLE_ADMIN");
+        userRepository.save(user);
+        userRepository.save(admin);
     }
 }

@@ -3,6 +3,7 @@ package com.Movies.Controller;
 import com.Movies.Model.MovieModel;
 import com.Movies.Repository.MovieRepository;
 import com.Movies.Service.Movie.MovieServiceImpl;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,12 +32,14 @@ public class MovieController {
         this.movieRepository = movieRepository;
     }
 
+    @ApiOperation(value = "Get all movies.")
     @GetMapping(produces = "application/json")
     @PreAuthorize("permitAll()")
     ResponseEntity<?> getAllMovies() {
         return movieServiceImpl.returnAllMovie();
     }
 
+    @ApiOperation(value = "Get a single movie details by id.")
     @GetMapping(value = "/{id}")
     @PreAuthorize("permitAll()")
     ResponseEntity<?> getMovieDetails(@PathVariable String id) {
@@ -51,9 +55,10 @@ public class MovieController {
         }
     }
 
+    @ApiOperation(value = "Add movie.", notes = "Needed authorization from Admin account.")
     @PostMapping(produces = "application/json", consumes = "application/json")
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<?> addMovie(@RequestBody MovieModel movieModel, BindingResult result) {
+    ResponseEntity<?> addMovie(@Valid @RequestBody MovieModel movieModel, BindingResult result) {
         if (movieModel == null) {
             logger.error("Attempt create movie with empty input data.");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Attempt create movie with empty input data.");
@@ -69,9 +74,10 @@ public class MovieController {
         }
     }
 
+    @ApiOperation(value = "Update movie.", notes = "Needed authorization from Admin account.")
     @PutMapping(produces = "application/json", consumes = "application/json")
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<?> updateMovie(@RequestBody MovieModel movieModel, BindingResult result) {
+    ResponseEntity<?> updateMovie(@Valid @RequestBody MovieModel movieModel, BindingResult result) {
         if (movieModel == null) {
             logger.error("Attempt update movie with empty input data.");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Attempt create movie with empty input data.");
@@ -87,6 +93,7 @@ public class MovieController {
         }
     }
 
+    @ApiOperation(value = "Add mark.", notes = "Needed authentication.")
     @PostMapping(value = "/addrating/[{movieId},{rating}]", produces = "application/json")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     ResponseEntity<?> addMark(@PathVariable(name = "movieId") String movieId, @PathVariable(name = "rating") String rating) {
@@ -97,6 +104,7 @@ public class MovieController {
         return movieServiceImpl.addRatingForFilm(movieId, rating);
     }
 
+    @ApiOperation(value = "Add mark.", notes = "Needed authentication.")
     @PostMapping(value = "likemovie/{movieId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     ResponseEntity<?> addLikeMovie(@PathVariable(name = "movieId") String movieId) {
