@@ -87,7 +87,7 @@ public class MovieController {
         }
     }
 
-    @PostMapping(value = "/addRating/[{movieId},{rating}]", produces = "application/json")
+    @PostMapping(value = "/addrating/[{movieId},{rating}]", produces = "application/json")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     ResponseEntity<?> addMark(@PathVariable(name = "movieId") String movieId, @PathVariable(name = "rating") String rating) {
         if(movieId == null || rating == null){
@@ -97,7 +97,7 @@ public class MovieController {
         return movieServiceImpl.addRatingForFilm(movieId, rating);
     }
 
-    @PostMapping(value = "likeMovie/{movieId}")
+    @PostMapping(value = "likemovie/{movieId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     ResponseEntity<?> addLikeMovie(@PathVariable(name = "movieId") String movieId) {
         if(movieId == null){
