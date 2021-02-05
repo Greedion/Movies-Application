@@ -33,35 +33,13 @@
  - H2 Database
  - Maven
  - Lombok
- 
+  
  # Credentials
  ## Admin/Admin
  ## User/User
- 
  # Api Endpoints: 
 > Default adress: http://localhost:8080/api
-## Access for everyone
-### Authorization
-- POST /auth/signin
-### Create account
-- POST /user/createaccount
-### Get movie's
-- GET /movie
-- GET /movie/{id}
-### Get review's
-- GET /review
-- GET /review/{id}
-## Access for user
-- POST /movie/addrating/[{movieId},{rating}]
-- POST /movie/likemovie/{movieId}
-- POST /review
-- POST /review/like/{reviewId}
-###Access for admin
-- POST /movie
-- PUT /movie
-- DELETE /review/{id}
-- GET /user
-
+## Swagger UI : [Go to Swagger UI](http://localhost:8080/swagger-ui.html)
 
 
 
