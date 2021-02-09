@@ -1,7 +1,7 @@
 package com.project.service.authorization;
 
-
 import com.project.entity.UserEntity;
+import com.project.exception.ExceptionsMessageArchive;
 import com.project.model.User;
 import com.project.model.JWTResponse;
 import com.project.repository.UserRepository;
@@ -50,7 +50,7 @@ public class AuthorizationServiceImpl implements AuthorizationInterface {
     }
 
     @Override
-    public ResponseEntity<?> start(User user, AuthenticationManager authenticationManager) {
+    public ResponseEntity<JWTResponse> start(User user, AuthenticationManager authenticationManager) {
         if (checkAccountExist(user) && checkCredentials(user)) {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -65,7 +65,7 @@ public class AuthorizationServiceImpl implements AuthorizationInterface {
                         userDetails.getUsername(),
                         roles));
         }
-        logger.error("Received incorrect logging data.");
+        logger.error(ExceptionsMessageArchive.AUTH_U_INCORRECT_DATA_EXCEPTION);
         return ResponseEntity.badRequest().build();
     }
 }

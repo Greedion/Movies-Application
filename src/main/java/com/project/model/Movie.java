@@ -12,14 +12,16 @@ public class Movie implements Serializable {
 
     private String id;
 
-    @NotNull(message = "Title can't be null")
-    @NotEmpty(message = "Title can't be empty")
-    @Size(min = 3, max = 14, message = "Tile length can be 3-14")
+    @NotBlank(message = "{Movie.title.notBlank}")
+    @NotNull(message = "{Movie.title.notNull}")
+    @NotEmpty(message = "{Movie.title.notEmpty}")
+    @Size(min = 3, max = 14, message = "{Movie.title.length}")
     private String title;
 
-    @NotNull(message = "Title can't be null")
-    @NotEmpty(message = "Title can't be empty")
-    @Size(min = 3, max = 500, message = "Detail length can be from range 3-500")
+    @NotBlank(message = "{Movie.details.notBlank}")
+    @NotNull(message = "{Movie.details.notNull}")
+    @NotEmpty(message = "{Movie.details.notEmpty}")
+    @Size(min = 3, max = 500, message = "{Movie.details.length}")
     private String details;
 
     private String likeMovie;

@@ -2,9 +2,7 @@ package com.project.model;
 
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -12,11 +10,15 @@ import java.io.Serializable;
 @Data
 public class Review implements Serializable {
 
-    @NotNull(message = "Movie id can't be null")
-    @Pattern(regexp = "[0-9]+", message = "Accept only digits")
+    @NotEmpty(message = "{Review.movieID.notEmpty}")
+    @NotBlank(message = "{Review.movieID.notBlank}")
+    @NotNull(message = "{Review.movieID.notNull}")
+    @Pattern(regexp = "[0-9]+", message = "{Review.movieID.pattern}")
     private String movieID;
 
-    @NotNull(message = "Review can't be null")
-    @Size(min = 5, max = 500, message = "The required length ranges from 5 - 500")
+    @NotEmpty(message = "{Review.review.notEmpty}")
+    @NotBlank(message = "{Review.review.notBlank=}")
+    @NotNull(message =  "{Review.review.notNull}")
+    @Size(min = 5, max = 500, message = "{Review.review.length}")
     private String review;
 }

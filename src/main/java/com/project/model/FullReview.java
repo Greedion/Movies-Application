@@ -1,11 +1,9 @@
 package com.project.model;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -15,16 +13,19 @@ public class FullReview implements Serializable {
 
     private String id;
 
-    @NotNull(message = "Review can't be null")
+    @NotBlank(message = "{FullReview.review.notBlank}")
+    @NotEmpty(message = "{FullReview.review.notEmpty}")
+    @NotNull(message = "{FullReview.review.notNull}")
+    @Length(min = 5, max = 500,message = "{FullReview.review.length}")
     @Size(min = 5, max = 500)
     private String review;
 
-    @Pattern(regexp = "[0-9]+", message = "Accept only digits")
+    @Pattern(regexp = "[0-9]+", message = "{FullReview.likeReview.pattern}")
     private String likeReview;
 
-    @NotNull(message = "Title can't be null")
-    @NotEmpty(message = "Title can't be empty")
-    @Size(min = 3, max = 14, message = "Name lenght can be 3-14")
+    @NotBlank(message = "{FullReview.movie.notBlank}")
+    @NotEmpty(message = "{FullReview.movie.notEmpty}")
+    @NotNull(message = "{FullReview.movie.notNull}")
+    @Length(min = 5, max = 500,message = "{FullReview.movie.length}")
     private String movie;
-
 }

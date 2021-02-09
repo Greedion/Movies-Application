@@ -1,16 +1,20 @@
 package com.project.service.review;
 
+import com.project.model.FullReview;
 import com.project.model.Review;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface ReviewInterface {
 
-    ResponseEntity<?> getAllRecentForMovie(String movieID);
+    ResponseEntity<List<FullReview>> getAllRecentForMovie(String movieID);
 
-    ResponseEntity<?> addReviewForMovie(Review iRM);
+    ResponseEntity<HttpStatus> addReviewForMovie(Review iRM);
 
-    ResponseEntity<?> deleteReviewForMovie(String reviewID);
+    ResponseEntity<HttpStatus> deleteReviewForMovie(String reviewID);
 
-    ResponseEntity<?> likeReview(String reviewID);
+    ResponseEntity<HttpStatus> likeReview(String reviewID);
 
 }
