@@ -1,6 +1,7 @@
 package com.project.service.review;
 
 import com.project.entity.MovieEntity;
+import com.project.exception.ExceptionsMessageArchive;
 import com.project.model.Review;
 import com.project.repository.ReviewRepository;
 import com.project.service.like.LikeServiceImpl;
@@ -10,9 +11,9 @@ import com.project.repository.MovieRepository;
 import com.project.utils.MapperForReview;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class ReviewServiceImpl implements ReviewInterface {
     }
 
     @Override
-    public ResponseEntity<?> getAllRecentForMovie(String movieID) {
+    public ResponseEntity<List<FullReview>> getAllRecentForMovie(String movieID) {
         if (movieRepository.existsById(Long.parseLong(movieID))) {
             Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(movieID));
             if (movie.isPresent()) {
@@ -46,44 +47,44 @@ public class ReviewServiceImpl implements ReviewInterface {
                 return ResponseEntity.ok(fullReviewObjects);
             }
         }
-        logger.error("Attempt parse String movieId to Long");
+        logger.error(ExceptionsMessageArchive.REVIEW_S_PARSE_STRING_EXCEPTION);
         return ResponseEntity.badRequest().build();
     }
 
     @Override
-    public ResponseEntity<?> addReviewForMovie(Review iRM) {
+    public ResponseEntity<HttpStatus> addReviewForMovie(Review iRM) {
         if (movieRepository.existsById(Long.parseLong(iRM.getMovieID()))) {
             Optional<MovieEntity> movie = movieRepository.findById(Long.parseLong(iRM.getMovieID()));
             movie.ifPresent(movieEntity -> reviewRepository.save(new ReviewEntity(null, iRM.getReview(), 0, movieEntity)));
             return ResponseEntity.ok().build();
-        } else{
-            logger.error("Attempt to add the review using a non-existent ID.");
-            return ResponseEntity.badRequest().build();}
+        } else {
+            logger.error(ExceptionsMessageArchive.REVIEW_S_ADD_REVIEW_NON_EXISTS_ID);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Override
-    public ResponseEntity<?> deleteReviewForMovie(String reviewID) {
+    public ResponseEntity<HttpStatus> deleteReviewForMovie(String reviewID) {
         if (reviewRepository.existsById(Long.parseLong(reviewID))) {
             reviewRepository.deleteById(Long.parseLong(reviewID));
             return ResponseEntity.ok().build();
-        } else{
-            logger.error("Attempt to delete the review using a non-existent ID.");
-            return ResponseEntity.badRequest().build();}
+        } else {
+            logger.error(ExceptionsMessageArchive.REVIEW_S_REMOVE_REVIEW_NON_EXISTS_ID);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Override
-    public ResponseEntity<?> likeReview(String reviewID) {
+    public ResponseEntity<HttpStatus> likeReview(String reviewID) {
         if (reviewRepository.existsById(Long.parseLong(reviewID))) {
             Optional<ReviewEntity> review = reviewRepository.findById(Long.parseLong(reviewID));
-            if (review.isPresent()) {
-                if (likeServiceImpl.canLike(2, review.get().getId())) {
-                    review.get().setLikeReview(review.get().getLikeReview() + 1);
-                    reviewRepository.save(review.get());
-                    return ResponseEntity.ok().build();
-                }
+            if (review.isPresent() && likeServiceImpl.canLike(2, review.get().getId())) {
+                review.get().setLikeReview(review.get().getLikeReview() + 1);
+                reviewRepository.save(review.get());
+                return ResponseEntity.ok().build();
             }
         }
-        logger.error("Attempt to like the review using a non-existent ID.");
+        logger.error(ExceptionsMessageArchive.REVIEW_S_ADD_LIKE_NON_EXISTS_ID);
         return ResponseEntity.badRequest().build();
     }
 }

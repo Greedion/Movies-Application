@@ -1,5 +1,6 @@
 package com.project.service.user;
 
+import com.project.exception.ExceptionsMessageArchive;
 import com.project.model.FullUser;
 import com.project.entity.UserEntity;
 import com.project.model.User;
@@ -10,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Service
 public class UserServiceImpl implements UserInterface{
@@ -21,13 +22,10 @@ public class UserServiceImpl implements UserInterface{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final static String DEFAULT_USER_ROLE = "ROLE_USER";
-
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @Override
     public ResponseEntity<List<FullUser>> getAllUsers() {
@@ -40,13 +38,14 @@ public class UserServiceImpl implements UserInterface{
     }
 
     @Override
-    public ResponseEntity<?> createAccount(User inputUser) {
+    public ResponseEntity<URI> createAccount(User inputUser) {
         if (!userRepository.existsByUsername(inputUser.getUsername())) {
-            UserEntity user = new UserEntity(inputUser.getUsername(), passwordEncoder.encode(inputUser.getPassword()), DEFAULT_USER_ROLE);
-            userRepository.save(user);
-            return ResponseEntity.ok().build();
+            UserEntity user = new UserEntity(inputUser.getUsername(), passwordEncoder.encode(inputUser.getPassword()),
+                    ExceptionsMessageArchive.USER_S_DEFAULT_USER_ROLE);
+            UserEntity object = userRepository.save(user);
+            return ResponseEntity.created(URI.create("/api/user/"+object.getId())).build();
         } else{
-            logger.error("Received wrong DEFAULT_USER_ROLE or account with this username doesn't exist");
+            logger.error(ExceptionsMessageArchive.USER_S_WRONG_DEFAULT_ROLE);
             return ResponseEntity.badRequest().build();}
     }
 }

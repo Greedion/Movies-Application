@@ -4,11 +4,12 @@ import com.project.model.FullUser;
 import com.project.model.User;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.util.List;
 
 public interface UserInterface {
 
-    public ResponseEntity<List<FullUser>> getAllUsers();
+     ResponseEntity<List<FullUser>> getAllUsers();
 
-    public ResponseEntity<?> createAccount(User inputUser);
+     ResponseEntity<URI> createAccount(User inputUser);
 }

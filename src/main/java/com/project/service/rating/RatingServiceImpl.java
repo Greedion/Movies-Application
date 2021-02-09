@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -16,7 +15,6 @@ public class RatingServiceImpl implements RatingInterface {
     private final RatingRepository ratingRepository;
     private final Logger logger = LoggerFactory.getLogger(RatingServiceImpl.class);
     public RatingServiceImpl(RatingRepository ratingRepository) {
-
         this.ratingRepository = ratingRepository;
     }
 
@@ -62,5 +60,4 @@ public class RatingServiceImpl implements RatingInterface {
         }
         return username;
     }
-
 }

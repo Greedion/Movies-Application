@@ -1,34 +1,38 @@
 package com.project.model;
 
 import lombok.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class FullUser implements Serializable {
-    @Pattern(regexp = "^[0-9]*$", message = "Accept only digits")
+
+    @Pattern(regexp = "^[0-9]*$", message = "{FullUser.id}")
     private String id;
 
-    @NotNull(message = "Username can't be null")
-    @NotEmpty(message = "Username can't be empty")
-    @Size(min = 6, max = 13, message = "Required length 6-13 characters")
+    @NotBlank(message = "{FullUser.username.notBlank}")
+    @NotNull(message = "{FullUser.username.notNull}")
+    @NotEmpty(message = "{FullUser.username.notEmpty}")
+    @Length(min = 3, max = 13,message = "{FullUser.username.size}")
     private String username;
 
-    @NotNull(message = "Password can't be null")
-    @NotEmpty(message = "Password can't be empty")
-    @Size(min = 6, max = 13, message = "Required length 6-13 characters")
+
+    @NotBlank(message = "{FullUser.password.notBlank}")
+    @NotNull(message = "{FullUser.password.notNull}")
+    @NotEmpty(message = "{FullUser.password.notEmpty}")
+    @Length(min = 3, max = 13,message = "{FullUser.password.size}")
     private String password;
 
-    @NotNull(message = "Role can't be null")
-    @NotEmpty(message = "Role can't be empty")
-    @Pattern(regexp = "^[0-9]*$", message = "Accept only digits")
-    private String role;
 
+    @NotBlank(message = "{FullUser.role.notBlank}")
+    @NotNull(message = "{FullUser.role.notNull}")
+    @NotEmpty(message = "{FullUser.role.notEmpty}")
+    @Pattern(regexp = "^[0-9]*$", message = "{FullUser.role.pattern}")
+    private String role;
 
 
 }
