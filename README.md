@@ -3,11 +3,12 @@
 
 > Application for movie fan
 
-### Clone
+### How To Run
 
 - Clone this repo to your local machine using `https://github.com/Greedion/Movies-Application.git`
-
-
+- Run command `mvn package` in project root directory
+- Run command `docker-compose up` in project root directory
+- [Go to Swagger UI](http://localhost:8080/swagger-ui.html)
 
 ## Features
 - View the list of all movies
@@ -30,9 +31,10 @@
  - Spring Validation
  - Spring Web
  - Spring Data JPA
- - H2 Database
+ - Mysql Databasae
  - Maven
  - Lombok
+ - Docker
   
  # Credentials
  ## Admin/Admin
