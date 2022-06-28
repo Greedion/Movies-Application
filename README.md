@@ -1,5 +1,5 @@
 
-# Movies-Application  
+# Movies-Application [DEPRECATED] 
 
 > Application for movie fan
 
